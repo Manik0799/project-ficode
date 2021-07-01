@@ -6,6 +6,7 @@ import {Modal, Button} from "react-bootstrap";
 
 function TableDisplayUsers({users}){
 
+
     // Modal Logic
    const [show, setShow] = useState(false);
    const [id, setId] = useState(null);
@@ -48,6 +49,24 @@ function TableDisplayUsers({users}){
     }
   }
 
+  const dotStyleActive = {
+        height: "12px",
+        width: "12px",
+        backgroundColor: "green",
+        borderRadius: "50%",
+        display: "inline-block",
+        marginRight : "5px"
+  }
+
+  const dotStyleNotActive = {
+        height: "12px",
+        width: "12px",
+        backgroundColor: "red",
+        borderRadius: "50%",
+        display: "inline-block",
+        marginRight : "5px"
+  }
+
 
     return(
         <div>
@@ -69,7 +88,11 @@ function TableDisplayUsers({users}){
                                     return (
                                             <tr>
                                             <td>{item.userid}</td>
-                                                <td>{item.name}</td>
+                                                <td>{
+                                                    item.activityStatus === "Yes" ? 
+                                                        <p><span className = "dot" style = {dotStyleActive}></span>{item.name}</p>:  
+                                                        <p><span className = "dot" style = {dotStyleNotActive}></span>{item.name}</p>
+                                                }</td>
                                                 <td>{item.email}</td>
                                                 <td>{item.phone}</td>
                                                 <td>{item.address}</td>

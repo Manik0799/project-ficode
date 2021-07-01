@@ -76,6 +76,14 @@ function DisplayUserInfo({user}){
 												{user.address}
 											</div>
 										</div>
+										<div className="row">
+											<div className="col-sm-3">
+												<h6 className="mb-0">Activity Status</h6>
+											</div>
+											<div className="col-sm-9 text-muted">
+												{user.activityStatus==="Yes" ? "Active" : "Inactive"}
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>

@@ -30,9 +30,19 @@ function SideNav(){
                     <Link to = {"user-list"}>
                         <a className="nav-link" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
                             <i className="menu-icon fa fa-user"></i>
-                            <span className="menu-title">List User</span>
+                            <span className="menu-title">List Users</span>
                         </a>
                     </Link>
+                    
+                    <li class="nav-item active">
+                    <Link to = {"active-users"}>
+                            <a class="nav-link" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
+								<i class="menu-icon fa fa-users"></i>
+								<span class="menu-title">Active Users</span>
+							</a>    
+                    </Link>
+							
+					</li>
                         
                     </li>
                 </ul>

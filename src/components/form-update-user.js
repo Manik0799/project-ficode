@@ -12,7 +12,8 @@ function FormUpdate({data}){
         name : data.name,
         email: data.email,
         phone : data.phone,
-        address : data.address
+        address : data.address,
+		activityStatus : data.activityStatus
      }
 
      const [values, setValues] = useState(initialValues);
@@ -125,6 +126,38 @@ function FormUpdate({data}){
 													<textarea className="form-control"  value = {values.address}
                                             onChange = {set('address')}></textarea>
 												</div>
+											</div>
+										</div>
+
+										<div className="form-group">
+											<div className="row">
+												<div className="col-md-3">
+                                        <label>Activity Status<span className="required">*</span></label>
+                                          <div>
+
+                                            <label >
+                                              <div> 
+                                                <input type = "radio" value = "Yes" 
+                                                  onChange = {set('activityStatus')}
+                                                  checked = {values.activityStatus === "Yes"}
+                                                style = {{'width' : "auto"}} /> 
+                                                Yes
+                                              </div>
+                                            </label>
+                                            <label>
+                                              <div>
+                                                <input type = "radio" value = "No" 
+                                                  onChange = {set('activityStatus')}
+                                                  checked = {values.activityStatus === "No"}
+                                                style = {{'width' : "auto"}}/> 
+                                                No
+                                              </div>
+                                            </label>
+                                          </div>
+
+                                         
+                                    
+                                </div>
 											</div>
 										</div>
 										<div className="col-md-12">

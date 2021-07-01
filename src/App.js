@@ -4,6 +4,7 @@ import Login from './views/Login';
 import CreateUser from './views/Create-User';
 import ListUsers from './views/List-Users';
 import UpdateUser from './views/Update-User';
+import ActiveUsers from './views/Active-Users';
 import UserProfile from "./views/User-Profile"
 import UserAddress from './views/User-address';
 import EditUser from './views/User-Edit-Profile';
@@ -19,6 +20,7 @@ function App() {
 
                     <Route path="/create-user" component= {CreateUser}></Route>
                     <Route path= "/update-user" component={UpdateUser}></Route>
+                    <Route path = "/active-users" component = {ActiveUsers} ></Route>
 
                     <Route path = "/user-profile" component = {UserProfile}></Route>
                     <Route path = "/user-address" component = {UserAddress}></Route>
