@@ -1,8 +1,9 @@
 import React from "react";
 import {Link} from "react-router-dom"
-import avatarImage from "../images/marc.jpg"
+import defaultAvatar from "../images/default_avatar.png"
 
 function DisplayUserInfo({user}){
+
 
     return(
         <div className="content-wrapper">
@@ -17,15 +18,17 @@ function DisplayUserInfo({user}){
                                                     pathname :"user-edit",
 													data : user
                                                 }}>
-										<a className="edit-btn" href="#">Edit Profile</a>
+										<a className="edit-btn" href = "#">Edit Profile</a>
 									</Link>
 								</div>
-							</div>
+							</div> 
 							<div className="row">
 								<div className="col-md-4 p-4">
 									<div className="md-card md-card-profile md-theme-default">
 										<div className="md-card-avatar">
-                                            {/* <img src={avatarImage} className="img" /> */}
+                                            <img 
+												src={user.userimage_link ? user.userimage_link : defaultAvatar} 
+												className="img" /> 
                                         </div>
 										<div className="md-card-content">
 											<h6 className="user-post text-gray text-center mt-2">{user.userid}</h6>

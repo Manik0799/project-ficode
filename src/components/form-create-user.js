@@ -23,7 +23,6 @@ function Form(){
     }
   };
 
-  console.log(values);
 
 //   Post request to API 
 const saveFormData = async () => {
