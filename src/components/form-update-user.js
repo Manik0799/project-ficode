@@ -49,7 +49,26 @@ function FormUpdate({data}){
     const saveFormData = async () => {
         
         var link = "http://localhost:5000/update/" + id
-        const response = await axios.put(link, {...values, ['userimage'] : file}, {headers : authHeader()});
+
+        	var obj = null;
+
+        if(file===null){
+          if(data.userimage_link===undefined){
+            // console.log("Both are not present");
+            obj = values
+          }
+          else{
+            // console.log("image link is present");
+            obj = {...values, ["userimage"] : data.userimage_link}
+          }
+        }
+        else{
+          // console.log("new file has been selected");
+          obj = {...values, ['userimage'] : file}
+        }
+		
+
+        const response = await axios.put(link, obj, {headers : authHeader()});
 
         if (response.status !== 200) {
         throw new Error(`Server Error: ${response.status}`); 
