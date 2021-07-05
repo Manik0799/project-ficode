@@ -1,3 +1,4 @@
+import helper
 from flask import Flask, json, session, wrappers
 from flask import jsonify, request
 from flask_pymongo import PyMongo
@@ -25,8 +26,6 @@ from werkzeug.utils import redirect
 from werkzeug.utils import secure_filename
 
 
-
-
 app = Flask(__name__)
 cors = CORS(app)
 # /////////////////////////////////////////
@@ -39,7 +38,6 @@ app.config["S3_SECRET"] = os.environ.get("S3_SECRET_ACCESS_KEY")
 app.config["S3_LOCATION"] = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
 
 # from helper import *
-import helper
 # ////////////////////////////////////////
 app.secret_key = "thisismysecret"
 
@@ -74,8 +72,10 @@ def token_required(f):
 
     return decorated
 
+
 # ////////////////////////////////////////////////////////////////////////////////////////
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -83,6 +83,8 @@ def allowed_file(filename):
 
 # Route for uploading files to S3 bucket
 # @app.route("/uploadfile", methods = ["POST"])
+
+
 def upload_file(binaryStringOfImage):
 
     if(binaryStringOfImage):
@@ -90,7 +92,7 @@ def upload_file(binaryStringOfImage):
         im = Image.open(BytesIO(decoded_string))
 
         filename = str(''.join(random.choices(string.ascii_uppercase +
-                             string.digits, k = 7)))
+                                              string.digits, k=7)))
         # im.format gives the extension of the file
         filename = filename + "." + im.format
 
@@ -103,7 +105,8 @@ def upload_file(binaryStringOfImage):
 
         if allowed_file(filename):
             filename = secure_filename(filename)
-            output  = helper.upload_file_to_s3(in_mem_file, filename, content_type,app.config["S3_BUCKET"])
+            output = helper.upload_file_to_s3(
+                in_mem_file, filename, content_type, app.config["S3_BUCKET"])
 
             if output == "error":
                 return "error"
@@ -144,7 +147,7 @@ def add_user():
             'email': email,
             'phone': phone,
             'address': address,
-            'activityStatus' : activityStatus
+            'activityStatus': activityStatus
         }
 
         db.users.insert(object)
@@ -166,6 +169,8 @@ def get_all_users():
     return resp
 
 # To get activity status details
+
+
 @app.route('/useractivity', methods=["GET"])
 @token_required
 def getUserActivity():
@@ -175,11 +180,11 @@ def getUserActivity():
 
     for user in users:
         if(user["activityStatus"] == "Yes"):
-            activeUser_count +=1
+            activeUser_count += 1
         elif(user['activityStatus'] == "No"):
-            inactiveUser_count +=1
+            inactiveUser_count += 1
 
-    return jsonify({"active" : activeUser_count, "inactive" : inactiveUser_count }), 200
+    return jsonify({"active": activeUser_count, "inactive": inactiveUser_count}), 200
 
 
 # To get a user by his/her id
@@ -227,25 +232,24 @@ def update_user(id):
     userimage_link = None
 
     if "userimage" in _json:
-      if _json["userimage"] != None:
-        userimage =  _json["userimage"]
-        userimage = userimage[0:4:1]
-        
-        if userimage == "http":
-            userimage_link = _json["userimage"]
-        else:
-            #    Upload file to aws
-            userimage_link = upload_file(_json["userimage"])
-            if userimage_link == "error":
-                userimage_link = 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-    
+        if _json["userimage"] != None:
+            userimage = _json["userimage"]
+            userimage = userimage[0:4:1]
+
+            if userimage == "http":
+                userimage_link = _json["userimage"]
+            else:
+                #    Upload file to aws
+                userimage_link = upload_file(_json["userimage"])
+                if userimage_link == "error":
+                    userimage_link = 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+
     userid = _json['userid']
     name = _json['name']
     email = _json['email']
     phone = _json['phone']
     address = _json['address']
     activityStatus = _json['activityStatus']
-
 
     # Checking for an existing email
     db_obj = db.users.find_one({"email": email})
@@ -261,8 +265,8 @@ def update_user(id):
             'email': email,
             'phone': phone,
             'address': address,
-            'activityStatus' : activityStatus,
-            'userimage_link' : userimage_link
+            'activityStatus': activityStatus,
+            'userimage_link': userimage_link
         }
 
         query = {"userid": id}
@@ -413,8 +417,8 @@ def user_login():
                 "email": user["email"],
                 "phone": user["phone"],
                 "address": user["address"],
-                'activityStatus' : user["activityStatus"]
-                })
+                'activityStatus': user["activityStatus"]
+             })
         return resp, 200
 
     return jsonify({"error": "Invalid Login credentials"}), 401
@@ -427,8 +431,8 @@ mail = Mail(app)  # instantiate the mail class
 # configuration of mail
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'manik071299@gmail.com'
-app.config['MAIL_PASSWORD'] = 'Manik@0799'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
@@ -460,5 +464,3 @@ def not_found(error=None):
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
